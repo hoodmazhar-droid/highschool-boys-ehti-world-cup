@@ -71,3 +71,192 @@ input,select{width:auto;max-width:100%;border:1px solid var(--line);background:#
 
 @media(max-width:900px){.fixtures-list{grid-template-columns:1fr}.fixture-main{grid-template-columns:1fr;gap:8px}.fixture-team,.fixture-team.right{text-align:left}.fixture-team.right .team-name{justify-content:flex-start}.fixture-score{width:100%}#players .panel-head{display:block}.player-tabs{margin-top:12px;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;justify-content:stretch}.player-tab{width:100%}#normal .normal-summary{grid-template-columns:1fr!important}#normal .groups-grid{grid-template-columns:1fr!important}.bracket-poster{display:grid!important;grid-template-columns:1fr!important;background:transparent!important;border:0!important;padding:0!important;gap:14px}.poster-round{background:#fff!important;border:1px solid rgba(212,175,55,.28)!important;border-radius:18px!important;padding:12px!important}.poster-round h3{text-align:left}.poster-match:after{display:none}.poster-round.final,.poster-round.third_place{grid-column:auto}.poster-team-name span:last-child,.poster-team em{white-space:normal}.group-table-head{display:none!important}.group-table-row{grid-template-columns:32px minmax(0,1fr) auto!important;grid-template-areas:'pos team pts' 'pos team gd';gap:6px 8px}.group-table-row>b:first-child{grid-area:pos}.group-team-main{grid-area:team}.group-table-row>span:nth-of-type(1),.group-table-row>span:nth-of-type(2),.group-table-row>span:nth-of-type(3),.group-table-row>span:nth-of-type(4){display:none}.group-table-row>span:nth-of-type(5){grid-area:gd;font-size:11px;color:#777}.group-table-row>strong{grid-area:pts;font-size:22px}}
 @media(max-width:520px){.player-tabs{grid-template-columns:1fr!important}.normal-summary article{padding:12px}.poster-round{padding:10px!important}.poster-match{padding:8px}.fixtures-list{gap:10px}}
+
+/* =========================================================
+   PHONE-FIRST REPAIR PACK
+   Fixes horizontal overflow and makes every tab stack cleanly
+   ========================================================= */
+html, body { max-width:100%; overflow-x:hidden !important; }
+*, *::before, *::after { min-width:0; }
+img, svg, video, canvas { max-width:100%; height:auto; }
+.site-shell, .site-header, .panel, .main-nav, .hero-layout, .match-centre, .fixtures-list, .groups-grid, .normal-summary, .bracket-poster { max-width:100%; }
+
+/* Make tables usable on phones without right-scroll */
+@media (max-width: 760px) {
+  body { font-size:14px; }
+  .site-shell { padding: 12px 10px 28px !important; }
+  .site-header { position: sticky; top:0; }
+  .main-nav {
+    display:grid !important;
+    grid-template-columns: 1fr auto !important;
+    gap:10px !important;
+    padding:10px !important;
+  }
+  .brand { gap:8px; }
+  .brand-trophy { width:38px !important; height:38px !important; border-radius:12px !important; font-size:21px !important; }
+  .brand strong { font-size:14px !important; }
+  .brand small { font-size:10px !important; }
+  .sync-btn { padding:8px 10px !important; font-size:12px !important; }
+  .nav-links {
+    grid-column:1 / -1;
+    width:100%;
+    display:flex !important;
+    gap:7px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    padding:2px 0 4px !important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .nav-links a { flex:0 0 auto; padding:8px 10px !important; font-size:12px !important; }
+
+  .panel {
+    padding:13px !important;
+    border-radius:18px !important;
+    margin-bottom:14px !important;
+    overflow:hidden !important;
+  }
+  .panel-head {
+    display:block !important;
+    margin-bottom:12px !important;
+  }
+  .panel-head input,
+  .panel-head select,
+  .filters input,
+  .filters select {
+    width:100% !important;
+    min-width:0 !important;
+    margin-top:9px !important;
+  }
+  .filters { display:grid !important; grid-template-columns:1fr !important; gap:7px !important; }
+  h1 { font-size:34px !important; letter-spacing:-.045em !important; line-height:1 !important; }
+  h2 { font-size:24px !important; }
+
+  /* Home */
+  .hero-layout { display:grid !important; grid-template-columns:1fr !important; gap:10px !important; }
+  .hero-layout>div:first-child, .status-card { padding:15px !important; border-radius:17px !important; }
+  .status-card strong { font-size:30px !important; margin-top:10px !important; }
+  .score-main { display:grid !important; grid-template-columns:1fr !important; gap:12px !important; padding:16px !important; }
+  .score-team { text-align:center !important; }
+  .score-centre { width:100% !important; min-width:0 !important; padding:12px !important; }
+  .score-centre strong { font-size:46px !important; }
+  .score-footer { display:grid !important; grid-template-columns:1fr !important; text-align:center !important; }
+  .mini-countdowns { grid-template-columns:1fr !important; gap:9px !important; }
+  .podium { grid-template-columns:1fr !important; gap:9px !important; }
+  .podium-card { padding:14px !important; border-radius:16px !important; }
+  .podium-card h3 { font-size:22px !important; }
+  .podium-card strong { font-size:28px !important; }
+  .kpis { grid-template-columns:1fr 1fr !important; gap:8px !important; }
+  .kpi { padding:11px !important; border-radius:14px !important; }
+  .kpi strong { font-size:21px !important; }
+
+  /* Tables: turn the main columns into compact mobile tables */
+  .table-wrap { overflow:hidden !important; width:100% !important; border-radius:16px !important; }
+  table { table-layout:fixed !important; width:100% !important; }
+  th, td { padding:9px 7px !important; white-space:normal !important; word-break:normal !important; overflow-wrap:anywhere !important; font-size:12px !important; }
+  .leaderboard-table th:nth-child(4), .leaderboard-table td:nth-child(4),
+  .leaderboard-table th:nth-child(5), .leaderboard-table td:nth-child(5),
+  .leaderboard-table th:nth-child(6), .leaderboard-table td:nth-child(6),
+  .leaderboard-table th:nth-child(7), .leaderboard-table td:nth-child(7),
+  .leaderboard-table th:nth-child(8), .leaderboard-table td:nth-child(8),
+  .leaderboard-table th:nth-child(9), .leaderboard-table td:nth-child(9) { display:none !important; }
+  #leaderboardTable th:nth-child(4), #leaderboardTable td:nth-child(4),
+  #leaderboardTable th:nth-child(5), #leaderboardTable td:nth-child(5),
+  #leaderboardTable th:nth-child(6), #leaderboardTable td:nth-child(6),
+  #leaderboardTable th:nth-child(7), #leaderboardTable td:nth-child(7),
+  #leaderboardTable th:nth-child(8), #leaderboardTable td:nth-child(8),
+  #leaderboardTable th:nth-child(9), #leaderboardTable td:nth-child(9) { display:none !important; }
+  #homeLeaderboardTable th:nth-child(4), #homeLeaderboardTable td:nth-child(4),
+  #homeLeaderboardTable th:nth-child(5), #homeLeaderboardTable td:nth-child(5),
+  #homeLeaderboardTable th:nth-child(6), #homeLeaderboardTable td:nth-child(6),
+  #homeLeaderboardTable th:nth-child(7), #homeLeaderboardTable td:nth-child(7),
+  #homeLeaderboardTable th:nth-child(8), #homeLeaderboardTable td:nth-child(8),
+  #homeLeaderboardTable th:nth-child(9), #homeLeaderboardTable td:nth-child(9) { display:none !important; }
+  #resultsTable th:nth-child(4), #resultsTable td:nth-child(4) { display:none !important; }
+  #playerMatchesTable th:nth-child(2), #playerMatchesTable td:nth-child(2) { display:none !important; }
+
+  /* Fixtures */
+  .fixtures-list { grid-template-columns:1fr !important; gap:10px !important; }
+  .fixture-card { padding:12px !important; border-radius:16px !important; }
+  .fixture-main { display:grid !important; grid-template-columns:1fr !important; gap:8px !important; }
+  .fixture-team, .fixture-team.right { text-align:left !important; }
+  .fixture-team.right .team-name { justify-content:flex-start !important; }
+  .fixture-score { width:100% !important; min-width:0 !important; }
+  .fixture-owner-vs { border-radius:12px !important; text-align:left !important; }
+
+  /* Teams / player cards */
+  .teams-grid, .cards { grid-template-columns:1fr !important; gap:10px !important; }
+  .team-card, .profile-card { padding:13px !important; border-radius:16px !important; }
+  #players .panel-head { display:block !important; }
+  .player-tabs { margin-top:12px !important; display:grid !important; grid-template-columns:1fr 1fr !important; gap:8px !important; width:100% !important; }
+  .player-tab { width:100% !important; padding:10px 6px !important; font-size:13px !important; }
+
+  /* Normal WC: keep it like before, but phone-friendly */
+  #normal .normal-summary { grid-template-columns:1fr !important; gap:9px !important; }
+  #normal .normal-summary article { padding:12px !important; border-radius:15px !important; }
+  #normal .groups-grid { display:grid !important; grid-template-columns:1fr !important; gap:12px !important; overflow:visible !important; }
+  .clean-group-card, .group-card { width:100% !important; max-width:100% !important; padding:12px !important; border-radius:16px !important; overflow:hidden !important; }
+  .group-card-title { gap:8px !important; align-items:flex-start !important; }
+  .group-table { display:grid !important; gap:7px !important; }
+  .group-table-head { display:none !important; }
+  .group-table-row {
+    display:grid !important;
+    grid-template-columns:30px minmax(0,1fr) 44px !important;
+    grid-template-areas:
+      'pos team pts'
+      'pos team gd' !important;
+    gap:4px 8px !important;
+    align-items:center !important;
+    padding:9px 7px !important;
+    border-radius:12px !important;
+  }
+  .group-table-row>b:first-child { grid-area:pos !important; width:26px !important; height:26px !important; }
+  .group-team-main { grid-area:team !important; min-width:0 !important; }
+  .group-team-main .team-name { max-width:100% !important; }
+  .group-team-main .team-name span:last-child { white-space:normal !important; overflow:visible !important; text-overflow:clip !important; }
+  .group-team-main small { display:block !important; margin-top:2px !important; }
+  .group-table-row>span:nth-of-type(1),
+  .group-table-row>span:nth-of-type(2),
+  .group-table-row>span:nth-of-type(3),
+  .group-table-row>span:nth-of-type(4) { display:none !important; }
+  .group-table-row>span:nth-of-type(5) { grid-area:gd !important; text-align:right !important; font-size:11px !important; color:#777 !important; display:block !important; }
+  .group-table-row>strong { grid-area:pts !important; text-align:right !important; font-size:22px !important; }
+
+  /* Flowchart: no sideways dragging on phone */
+  .bracket-grid, .poster-bracket { overflow:visible !important; width:100% !important; }
+  .bracket-poster {
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+    background:transparent !important;
+    border:0 !important;
+    padding:0 !important;
+    overflow:visible !important;
+  }
+  .poster-round {
+    width:100% !important;
+    max-width:100% !important;
+    background:#fff !important;
+    color:#111 !important;
+    border:1px solid rgba(212,175,55,.28) !important;
+    border-radius:16px !important;
+    padding:11px !important;
+    margin:0 !important;
+    grid-column:auto !important;
+  }
+  .poster-round h3 { text-align:left !important; margin-bottom:9px !important; }
+  .poster-round-stack { display:grid !important; gap:8px !important; }
+  .poster-match { padding:8px !important; border-radius:12px !important; overflow:hidden !important; }
+  .poster-match:after { display:none !important; }
+  .poster-meta { flex-wrap:wrap !important; gap:4px !important; }
+  .poster-team { grid-template-columns:minmax(0,1fr) auto !important; padding:7px !important; }
+  .poster-team-name { min-width:0 !important; }
+  .poster-team-name span:last-child, .poster-team em { white-space:normal !important; overflow:visible !important; text-overflow:clip !important; }
+}
+
+@media (max-width: 420px) {
+  .player-tabs { grid-template-columns:1fr !important; }
+  .kpis { grid-template-columns:1fr !important; }
+  .brand small { display:none !important; }
+  th, td { font-size:11px !important; padding:8px 5px !important; }
+  .flag { width:25px !important; height:17px !important; }
+}
