@@ -310,3 +310,104 @@ img, svg, video, canvas { max-width:100%; height:auto; }
   .home-table-head{margin-bottom:10px!important;}
   .home-table-head h2{font-size:20px!important;}
 }
+
+/* Simple Home Leaderboard */
+.home-table-card{overflow:hidden!important;}
+.home-table-scroll{max-height:430px!important;overflow-y:auto!important;overflow-x:hidden!important;padding:10px!important;background:#0f0f0f!important;}
+.home-simple-league{display:grid;gap:8px;}
+.home-league-row{display:grid;grid-template-columns:42px minmax(0,1fr) 58px repeat(6,48px);gap:8px;align-items:center;background:#171717;border:1px solid rgba(212,175,55,.22);border-radius:14px;padding:10px 12px;color:#f7f2e7;min-width:0;}
+.home-league-row.rank-1{border-color:rgba(212,175,55,.75);background:linear-gradient(135deg,#241e0c,#151515)}
+.home-league-row.rank-2{border-color:rgba(220,220,220,.5)}
+.home-league-row.rank-3{border-color:rgba(184,115,51,.55)}
+.home-rank{font-size:19px;font-weight:950;text-align:center;color:#d4af37;}
+.home-name{min-width:0;}
+.home-name strong{display:block;font-size:15px;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.home-name small{display:block;font-size:10px;color:#aaa;margin-top:3px;text-transform:uppercase;font-weight:900;letter-spacing:.08em;}
+.home-pts{text-align:center;background:#fff4cf;color:#111;border-radius:12px;padding:7px 6px;}
+.home-pts strong{display:block;font-size:22px;line-height:.9;}
+.home-pts span,.home-stat span{display:block;font-size:9px;text-transform:uppercase;font-weight:950;letter-spacing:.08em;color:inherit;opacity:.75;margin-top:3px;}
+.home-stat{text-align:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:6px 4px;}
+.home-stat b{display:block;font-size:14px;line-height:1;color:#fff;}
+@media(max-width:640px){
+  .home-table-head{padding:12px 4px 10px!important;border-bottom:0!important;}
+  .home-table-head h2{font-size:18px!important;}
+  .home-table-head span{font-size:11px!important;}
+  .home-table-scroll{padding:8px!important;max-height:520px!important;}
+  .home-league-row{grid-template-columns:34px minmax(0,1fr) 48px repeat(3,38px);gap:6px;padding:9px 8px;border-radius:13px;}
+  .home-stat:nth-of-type(7), .home-stat:nth-of-type(8), .home-stat:nth-of-type(9){display:none;}
+  .home-rank{font-size:16px;}
+  .home-name strong{font-size:14px;}
+  .home-pts{padding:6px 4px;}
+  .home-pts strong{font-size:20px;}
+  .home-stat b{font-size:13px;}
+}
+@media(max-width:380px){
+  .home-league-row{grid-template-columns:30px minmax(0,1fr) 44px repeat(2,34px);}
+  .home-stat:nth-of-type(6){display:none;}
+}
+
+/* Final mobile cleanup: compact home leaderboard, results points, compact team cards */
+.home-simple-league{display:grid!important;gap:8px!important;}
+.home-league-row{display:grid!important;grid-template-columns:36px minmax(0,1fr) 58px!important;grid-template-areas:'rank name pts' 'stats stats stats'!important;gap:8px!important;align-items:center!important;}
+.home-rank{grid-area:rank!important;}
+.home-name{grid-area:name!important;}
+.home-pts{grid-area:pts!important;}
+.home-stats-grid{grid-area:stats!important;display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:5px!important;min-width:0!important;}
+.home-stats-grid span{display:grid!important;place-items:center!important;background:rgba(255,255,255,.07)!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:10px!important;padding:6px 2px!important;color:#fff!important;min-width:0!important;}
+.home-stats-grid b{display:block!important;font-size:13px!important;line-height:1!important;color:#fff!important;}
+.home-stats-grid em{display:block!important;font-style:normal!important;font-size:9px!important;text-transform:uppercase!important;font-weight:950!important;letter-spacing:.06em!important;color:#c8b365!important;margin-top:3px!important;}
+@media(max-width:640px){
+  .home-league-row{grid-template-columns:32px minmax(0,1fr) 50px!important;padding:9px!important;}
+  .home-stats-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:4px!important;}
+  .home-stats-grid span{padding:5px 1px!important;border-radius:8px!important;}
+  .home-stats-grid b{font-size:12px!important;}
+  .home-stats-grid em{font-size:8px!important;}
+}
+@media(max-width:360px){
+  .home-stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+}
+
+.results-list{display:grid;gap:10px;width:100%;max-width:100%;overflow:hidden;}
+.result-card{background:#fff;color:#111;border:1px solid rgba(212,175,55,.35);border-radius:18px;padding:12px;box-shadow:0 10px 28px rgba(0,0,0,.16);display:grid;gap:10px;min-width:0;}
+.result-date{display:flex;justify-content:space-between;gap:10px;align-items:center;color:#6f5b12;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #f0e4bd;padding-bottom:8px;}
+.result-date span,.result-date b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.result-scoreline{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:center;font-weight:950;}
+.result-scoreline>div{min-width:0;}
+.result-scoreline>div:last-child{text-align:right;}
+.result-scoreline>div:last-child .team-name{justify-content:flex-end;}
+.result-scoreline strong{font-size:20px;background:#111;color:#d4af37;border-radius:12px;padding:8px 10px;white-space:nowrap;}
+.result-owners{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:center;background:#fff8df;border:1px solid #ead896;border-radius:12px;padding:8px 10px;font-weight:900;}
+.result-owners span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.result-owners span:last-child{text-align:right;}
+.result-owners b{color:#7a6413;font-size:12px;}
+.points-awarded{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:center;}
+.points-awarded>b{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#7a6413;}
+.points-awarded span{border-radius:999px;padding:7px 9px;font-weight:950;text-align:center;font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.points-positive{background:#e9fff3;color:#087a43;border:1px solid #b7ebca;}
+.points-zero{background:#f2f2f2;color:#777;border:1px solid #e0e0e0;}
+@media(max-width:520px){
+  .result-card{padding:10px;border-radius:16px;}
+  .result-scoreline{grid-template-columns:1fr;gap:7px;text-align:left;}
+  .result-scoreline>div:last-child{text-align:left;}
+  .result-scoreline>div:last-child .team-name{justify-content:flex-start;}
+  .result-scoreline strong{width:100%;text-align:center;font-size:22px;}
+  .points-awarded{grid-template-columns:1fr;}
+  .points-awarded>b{text-align:left;}
+}
+
+.compact-team-card{display:grid!important;gap:10px!important;padding:13px!important;}
+.compact-team-card .team-card-head h3{font-size:22px!important;margin:0!important;}
+.team-mini-stats{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:5px!important;background:#fff8df!important;border:1px solid #ead896!important;border-radius:14px!important;padding:8px!important;}
+.team-mini-stats span{display:grid!important;place-items:center!important;min-width:0!important;}
+.team-mini-stats b{font-size:17px!important;line-height:1!important;color:#111!important;}
+.team-mini-stats em{font-style:normal!important;font-size:8px!important;text-transform:uppercase!important;font-weight:950!important;letter-spacing:.06em!important;color:#7a6413!important;margin-top:4px!important;}
+.compact-lines{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;}
+.compact-lines>div{background:#fafafa!important;border:1px solid #eee!important;border-radius:12px!important;padding:8px!important;min-width:0!important;}
+.compact-lines span{margin-top:0!important;}
+.compact-lines p{font-size:13px!important;line-height:1.35!important;min-width:0!important;overflow:hidden!important;}
+.compact-lines small{display:block!important;margin-top:4px!important;color:#555!important;font-weight:900!important;}
+@media(max-width:520px){
+  .teams-grid{grid-template-columns:1fr!important;gap:10px!important;}
+  .team-mini-stats{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+  .compact-lines{grid-template-columns:1fr!important;}
+}

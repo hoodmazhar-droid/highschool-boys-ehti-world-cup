@@ -101,10 +101,28 @@ function renderLeaderboard(){
   const rowFn=r=>`<td class="pos">${r.Rank<=3?['🥇','🥈','🥉'][r.Rank-1]:r.Rank}</td><td><strong>${r.Person}</strong><small class="subline">${r.Teams.length} teams</small></td><td class="num">${r.P}</td><td class="num">${r.W}</td><td class="num">${r.D}</td><td class="num">${r.L}</td><td class="num">${r.GF}</td><td class="num">${r.GA}</td><td class="num ${r.GD>0?'positive':r.GD<0?'negative':''}">${r.GD>0?'+':''}${r.GD}</td><td class="num points">${r.Pts}</td>`;
   const rows=q?table.filter(r=>clean(r.Person).includes(q)||r.Teams.some(t=>clean(t).includes(q))):table;
   htmlTable($('#leaderboardTable'), headers, rows, rowFn);
-  htmlTable($('#homeLeaderboardTable'), headers, table, rowFn);
+  renderHomeSimpleLeaderboard(table);
   renderLeaderboardCards($('#leaderboardTable'), rows, 'leaderboardMobileCards');
-  renderLeaderboardCards($('#homeLeaderboardTable'), table, 'homeLeaderboardMobileCards');
 }
+function renderHomeSimpleLeaderboard(rows){
+  const wrap = document.querySelector('.home-table-scroll');
+  if(!wrap) return;
+  wrap.innerHTML = `<div class="home-simple-league">${rows.map(r=>`
+    <article class="home-league-row rank-${r.Rank}">
+      <div class="home-rank">${r.Rank<=3?['🥇','🥈','🥉'][r.Rank-1]:r.Rank}</div>
+      <div class="home-name"><strong>${safe(r.Person)}</strong><small>Rank ${r.Rank}</small></div>
+      <div class="home-pts"><strong>${r.Pts}</strong><span>Pts</span></div>
+      <div class="home-stats-grid">
+        <span><b>${r.P}</b><em>P</em></span>
+        <span><b>${r.W}</b><em>W</em></span>
+        <span><b>${r.D}</b><em>D</em></span>
+        <span><b>${r.L}</b><em>L</em></span>
+        <span><b>${r.GD>=0?'+':''}${r.GD}</b><em>GD</em></span>
+        <span><b>${r.GF}</b><em>GF</em></span>
+      </div>
+    </article>`).join('')}</div>`;
+}
+
 function renderLeaderboardCards(tableEl, rows, id){
   if(!tableEl) return;
   let wrap=document.getElementById(id);
@@ -122,7 +140,7 @@ function renderLeaderboardCards(tableEl, rows, id){
   </article>`).join('');
 }
 function teamStats(team){ const t=canon(team); const matches=allMatches().filter(m=>m.home===t || m.away===t); const finished=matches.filter(m=>m.Status==='FINISHED'); let P=0,W=0,D=0,L=0,GF=0,GA=0,Pts=0; finished.forEach(m=>{ const home=m.home===t, gf=home?+m['Home Goals']:+m['Away Goals'], ga=home?+m['Away Goals']:+m['Home Goals']; P++; GF+=gf; GA+=ga; if(gf>ga){W++;Pts+=3}else if(gf===ga){D++;Pts++}else L++; }); return {P,W,D,L,GF,GA,GD:GF-GA,Pts,matches,latest:finished.at(-1),next:matches.find(m=>m.Status!=='FINISHED')}; }
-function renderTeams(){ const q=clean($('#teamSearch')?.value); const all=state.teams.flatMap(p=>p.countries.map(c=>({team:canon(c),owner:p.person}))).sort((a,b)=>a.team.localeCompare(b.team)); const filtered=q?all.filter(x=>clean(x.team).includes(q)||clean(x.owner).includes(q)):all; $('#teamsGrid').innerHTML=filtered.map(({team,owner})=>{ const st=teamStats(team); const latest=st.latest?`${teamDisplay(st.latest.home)} ${st.latest['Home Goals']} - ${st.latest['Away Goals']} ${teamDisplay(st.latest.away)}`:'No result yet'; const next=st.next?`${teamDisplay(st.next.home)} vs ${teamDisplay(st.next.away)} <small>${fmtDate(st.next.DateISO)}</small>`:'No upcoming fixture'; return `<article class="team-card"><div class="team-card-head">${flagImg(team)}<div><h3>${safe(team)}</h3><p>${owner}</p></div></div><div class="team-record"><b>${st.Pts}</b><span>pts</span><b>${st.GD>=0?'+':''}${st.GD}</b><span>GD</span><b>${st.P}</b><span>P</span></div><div class="team-lines"><span>Latest</span><p>${latest}</p><span>Next</span><p>${next}</p></div></article>`; }).join(''); }
+function renderTeams(){ const q=clean($('#teamSearch')?.value); const all=state.teams.flatMap(p=>p.countries.map(c=>({team:canon(c),owner:p.person}))).sort((a,b)=>a.team.localeCompare(b.team)); const filtered=q?all.filter(x=>clean(x.team).includes(q)||clean(x.owner).includes(q)):all; $('#teamsGrid').innerHTML=filtered.map(({team,owner})=>{ const st=teamStats(team); const latest=st.latest?`${teamDisplay(st.latest.home)} <b>${st.latest['Home Goals']} - ${st.latest['Away Goals']}</b> ${teamDisplay(st.latest.away)}`:'No result yet'; const next=st.next?`${teamDisplay(st.next.home)} <b>vs</b> ${teamDisplay(st.next.away)} <small>${fmtDate(st.next.DateISO)}</small>`:'No upcoming fixture'; return `<article class="team-card compact-team-card"><div class="team-card-head">${flagImg(team)}<div><h3>${safe(team)}</h3><p>${owner}</p></div></div><div class="team-mini-stats"><span><b>${st.Pts}</b><em>PTS</em></span><span><b>${st.P}</b><em>P</em></span><span><b>${st.W}</b><em>W</em></span><span><b>${st.D}</b><em>D</em></span><span><b>${st.L}</b><em>L</em></span><span><b>${st.GD>=0?'+':''}${st.GD}</b><em>GD</em></span></div><div class="team-lines compact-lines"><div><span>Latest</span><p>${latest}</p></div><div><span>Next</span><p>${next}</p></div></div></article>`; }).join(''); }
 function renderFixtures(){
   const q=clean($('#fixtureSearch')?.value), sf=$('#statusFilter')?.value||'all', stg=$('#stageFilter')?.value||'all';
   let rows=allMatches();
@@ -146,7 +164,12 @@ function renderFixtures(){
   }
   htmlTable($('#fixturesTable'),[{label:'#'},{label:'Date'},{label:'Stage'},{label:'Home'},{label:'Owner'},{label:'Away'},{label:'Owner'},{label:'Score'},{label:'Status'}], rows, m=>`<td>${m['Match #']||''}</td><td>${fmtDate(m.DateISO)}</td><td>${stageLabel(m.Stage)}<small class="subline">${m.Group||''}</small></td><td><strong>${teamDisplay(m.home)}</strong></td><td>${m.homeOwner||'—'}</td><td><strong>${teamDisplay(m.away)}</strong></td><td>${m.awayOwner||'—'}</td><td>${scoreText(m)}</td><td>${badgeStatus(m.Status)}</td>`);
 }
-function renderResults(){ const q=clean($('#resultSearch')?.value); let rows=finishedMatches().sort((a,b)=>new Date(b.DateISO)-new Date(a.DateISO)); if(q) rows=rows.filter(m=>[m.home,m.away,m.homeOwner,m.awayOwner,stageLabel(m.Stage)].some(x=>clean(x).includes(q))); htmlTable($('#resultsTable'),[{label:'Date'},{label:'Result'},{label:'Owners'},{label:'Points'}], rows, m=>{ const hg=+m['Home Goals'], ag=+m['Away Goals']; const hp=hg>ag?3:hg===ag?1:0, ap=ag>hg?3:hg===ag?1:0; return `<td>${fmtDate(m.DateISO)}</td><td><strong>${teamDisplay(m.home)}</strong> ${hg} - ${ag} <strong>${teamDisplay(m.away)}</strong></td><td>${m.homeOwner||'—'} vs ${m.awayOwner||'—'}</td><td>${m.homeOwner||'Home'} +${hp} • ${m.awayOwner||'Away'} +${ap}</td>`; }); }
+function renderResults(){ const q=clean($('#resultSearch')?.value); let rows=finishedMatches().sort((a,b)=>new Date(b.DateISO)-new Date(a.DateISO)); if(q) rows=rows.filter(m=>[m.home,m.away,m.homeOwner,m.awayOwner,stageLabel(m.Stage)].some(x=>clean(x).includes(q))); const wrap=$('#resultsList'); if(wrap){ wrap.innerHTML=rows.map(m=>{ const hg=+m['Home Goals'], ag=+m['Away Goals']; const hp=hg>ag?3:hg===ag?1:0, ap=ag>hg?3:hg===ag?1:0; const winner = hp>ap ? m.homeOwner : ap>hp ? m.awayOwner : 'Draw'; return `<article class="result-card ${hp===ap?'draw':hp>ap?'home-win':'away-win'}">
+      <div class="result-date"><span>${fmtDate(m.DateISO)}</span><b>${stageLabel(m.Stage)}</b></div>
+      <div class="result-scoreline"><div>${teamDisplay(m.home)}</div><strong>${hg} - ${ag}</strong><div>${teamDisplay(m.away)}</div></div>
+      <div class="result-owners"><span>${m.homeOwner||'—'}</span><b>vs</b><span>${m.awayOwner||'—'}</span></div>
+      <div class="points-awarded"><b>Points</b><span class="${hp? 'points-positive':'points-zero'}">${m.homeOwner||'Home'} +${hp}</span><span class="${ap? 'points-positive':'points-zero'}">${m.awayOwner||'Away'} +${ap}</span></div>
+    </article>`; }).join(''); return; } htmlTable($('#resultsTable'),[{label:'Date'},{label:'Result'},{label:'Owners'},{label:'Points'}], rows, m=>{ const hg=+m['Home Goals'], ag=+m['Away Goals']; const hp=hg>ag?3:hg===ag?1:0, ap=ag>hg?3:hg===ag?1:0; return `<td>${fmtDate(m.DateISO)}</td><td><strong>${teamDisplay(m.home)}</strong> ${hg} - ${ag} <strong>${teamDisplay(m.away)}</strong></td><td>${m.homeOwner||'—'} vs ${m.awayOwner||'—'}</td><td>${m.homeOwner||'Home'} +${hp} • ${m.awayOwner||'Away'} +${ap}</td>`; }); }
 function renderPlayerTabs(person){
   const wrap = $('#playerTabs');
   if(!wrap) return;
