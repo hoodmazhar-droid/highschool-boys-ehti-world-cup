@@ -3,132 +3,160 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>High School Boys + Ehti World Cup League</title>
+  <title>High School Boys + Ehti | World Cup League</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg"></div>
-  <header class="hero">
-    <nav class="topbar">
-      <div class="brand">
-        <span class="logo">⚽</span>
+  <div class="stadium-bg"></div>
+  <div class="site-shell">
+    <header class="masthead">
+      <nav class="topbar">
+        <div class="brand-lockup">
+          <div class="emblem" aria-hidden="true">⚽</div>
+          <div>
+            <strong>High School Boys + Ehti</strong>
+            <small>World Cup Private League</small>
+          </div>
+        </div>
+        <div class="top-actions">
+          <div class="live-pill" id="liveStatus">Static data loaded</div>
+          <a class="ghost-link" href="#leaderboard" data-tab="leaderboard">Standings</a>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Match Centre • FIFA-style table</p>
+          <h1>High School Boys + Ehti</h1>
+          <p class="lead">A premium World Cup league hub with live results, official-style fixtures, player tabs and a proper Premier League table.</p>
+          <div class="actions">
+            <button class="primary" data-tab="leaderboard">View Standings</button>
+            <button data-tab="fixtures">Match Centre</button>
+            <button data-tab="players">Player Profiles</button>
+          </div>
+        </div>
+
+        <aside class="leader-card">
+          <span class="card-label">Current leader</span>
+          <strong id="currentLeader">—</strong>
+          <small id="leaderMeta">Loading table…</small>
+          <div class="mini-divider"></div>
+          <p>Live sync checks the World Cup API and recalculates your private league table.</p>
+        </aside>
+      </section>
+    </header>
+
+    <main>
+      <section class="kpis" id="kpis"></section>
+
+      <section class="competition-strip">
         <div>
-          <strong>High School Boys + Ehti</strong>
-          <small>World Cup League</small>
+          <span>Competition</span>
+          <strong>World Cup 2026</strong>
         </div>
-      </div>
-      <div class="live-pill" id="liveStatus">Static data loaded</div>
-    </nav>
-    <section class="hero-grid">
-      <div>
-        <p class="eyebrow">FIFA World Cup 2026 private league</p>
-        <h1>High School Boys + Ehti</h1>
-        <p class="lead">Premier League-style table, fixtures, results and player tabs — built from your tracker, with built-in live API sync.</p>
-        <div class="actions">
-          <button class="primary" data-tab="leaderboard">View Table</button>
-          <button data-tab="fixtures">Fixtures</button>
-          <button data-tab="players">Players</button>
-        </div>
-      </div>
-      <div class="score-card">
-        <span>Current leader</span>
-        <strong id="currentLeader">—</strong>
-        <small id="leaderMeta">Loading table…</small>
-      </div>
-    </section>
-  </header>
-
-  <main>
-    <section class="kpis" id="kpis"></section>
-
-    <div class="tabs" role="tablist">
-      <button class="tab active" data-tab="leaderboard">Leaderboard</button>
-      <button class="tab" data-tab="players">Players</button>
-      <button class="tab" data-tab="fixtures">Fixtures</button>
-      <button class="tab" data-tab="results">Results</button>
-      <button class="tab" data-tab="live">Live API</button>
-    </div>
-
-    <section class="panel active" id="leaderboard">
-      <div class="panel-head">
         <div>
-          <h2>League Table</h2>
-          <p>Sorted like a proper table: points, goal difference, goals for, then wins.</p>
+          <span>Rules</span>
+          <strong>Win 3 • Draw 1</strong>
         </div>
-        <input id="tableSearch" placeholder="Search player…" />
-      </div>
-      <div class="table-wrap">
-        <table id="leaderboardTable"></table>
-      </div>
-    </section>
-
-    <section class="panel" id="players">
-      <div class="panel-head">
         <div>
-          <h2>Player Tabs</h2>
-          <p>Every player, their teams, record and upcoming games.</p>
+          <span>Sorting</span>
+          <strong>Pts • GD • GF • Wins</strong>
         </div>
-        <select id="playerSelect"></select>
-      </div>
-      <div id="playerCards" class="cards"></div>
-      <div class="table-wrap compact">
-        <table id="playerMatchesTable"></table>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel" id="fixtures">
-      <div class="panel-head">
-        <div>
-          <h2>Fixtures</h2>
-          <p>Chronological fixture list with owners and matchups.</p>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="leaderboard">Standings</button>
+        <button class="tab" data-tab="players">Players</button>
+        <button class="tab" data-tab="fixtures">Fixtures</button>
+        <button class="tab" data-tab="results">Results</button>
+        <button class="tab" data-tab="live">Live API</button>
+      </div>
+
+      <section class="panel active" id="leaderboard">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">Private league standings</p>
+            <h2>League Table</h2>
+            <p>Sorted by points, goal difference, goals for, then wins.</p>
+          </div>
+          <input id="tableSearch" placeholder="Search player…" />
         </div>
-        <div class="filters">
-          <input id="fixtureSearch" placeholder="Search team/player…" />
-          <select id="statusFilter">
-            <option value="all">All statuses</option>
-            <option value="TIMED">Upcoming</option>
-            <option value="FINISHED">Finished</option>
-          </select>
+        <div class="table-wrap featured-table">
+          <table id="leaderboardTable"></table>
         </div>
-      </div>
-      <div class="table-wrap">
-        <table id="fixturesTable"></table>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel" id="results">
-      <div class="panel-head">
-        <div>
-          <h2>Results</h2>
-          <p>Completed matches only.</p>
+      <section class="panel" id="players">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">Squad ownership</p>
+            <h2>Player Profiles</h2>
+            <p>Each player, their teams, record and match list.</p>
+          </div>
+          <select id="playerSelect"></select>
         </div>
-        <input id="resultSearch" placeholder="Search results…" />
-      </div>
-      <div class="table-wrap">
-        <table id="resultsTable"></table>
-      </div>
-    </section>
+        <div id="playerCards" class="cards"></div>
+        <div class="table-wrap compact">
+          <table id="playerMatchesTable"></table>
+        </div>
+      </section>
 
-    <section class="panel" id="live">
-      <div class="setup">
-        <h2>Live API Mode</h2>
-        <p>The API key is built directly into this version, so you can upload the folder and test it without setting environment variables.</p>
-        <ol>
-          <li>Open <code>index.html</code> or upload the folder to Netlify / GitHub Pages.</li>
-          <li>Press the button below to pull World Cup match data from football-data.org.</li>
-          <li>Finished scores are matched to your tracker and the league table recalculates automatically.</li>
-        </ol>
-        <p class="warning">Note: because the token is in browser JavaScript, anyone with the website link can view it.</p>
-        <button id="testLive">Sync live scores now</button>
-        <pre id="liveOutput">Not tested yet.</pre>
-      </div>
-    </section>
-  </main>
+      <section class="panel" id="fixtures">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">Match centre</p>
+            <h2>Fixtures</h2>
+            <p>Chronological fixtures with owners and live status.</p>
+          </div>
+          <div class="filters">
+            <input id="fixtureSearch" placeholder="Search team/player…" />
+            <select id="statusFilter">
+              <option value="all">All statuses</option>
+              <option value="TIMED">Upcoming</option>
+              <option value="FINISHED">Finished</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="fixturesTable"></table>
+        </div>
+      </section>
 
-  <footer>
-    <span>High School Boys + Ehti World Cup League</span>
-    <span>Win 3 • Draw 1 • Loss 0</span>
-  </footer>
+      <section class="panel" id="results">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">Completed games</p>
+            <h2>Results</h2>
+            <p>Finished matches only, with points awarded to each owner.</p>
+          </div>
+          <input id="resultSearch" placeholder="Search results…" />
+        </div>
+        <div class="table-wrap">
+          <table id="resultsTable"></table>
+        </div>
+      </section>
+
+      <section class="panel" id="live">
+        <div class="setup">
+          <p class="section-kicker">Live data connection</p>
+          <h2>Live API Mode</h2>
+          <p>The site now uses the Netlify Function at <code>/.netlify/functions/worldcup</code>, so the sync button works from your deployed Netlify link.</p>
+          <ol>
+            <li>Upload these files to the same GitHub repository.</li>
+            <li>In Netlify, go to <strong>Deploys → Trigger deploy → Deploy site</strong>.</li>
+            <li>Open the Netlify link and press the button below.</li>
+          </ol>
+          <button id="testLive" class="primary">Sync live scores now</button>
+          <pre id="liveOutput">Not tested yet.</pre>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>High School Boys + Ehti World Cup League</span>
+      <span>Designed as an official-style private tournament hub</span>
+    </footer>
+  </div>
 
   <script src="data.js"></script>
   <script src="app.js"></script>

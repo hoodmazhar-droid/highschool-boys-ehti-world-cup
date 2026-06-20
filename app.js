@@ -5,10 +5,15 @@ const $ = (q) => document.querySelector(q);
 const $$ = (q) => Array.from(document.querySelectorAll(q));
 
 const aliases = {
-  "usa":"United States","united states":"United States","korea republic":"South Korea","south korea":"South Korea",
-  "cabo verde":"Cape Verde","cape verde":"Cape Verde","côte d'ivoire":"Ivory Coast","ivory coast":"Ivory Coast",
-  "congo dr":"Congo","dr congo":"Congo","bosnia-herzegovina":"Bosnia and Herzegovina","bosnia and herzegovina":"Bosnia and Herzegovina",
-  "ir iran":"Iran","iran":"Iran","türkiye":"Turkey","turkey":"Turkey","curaçao":"Curaçao","curacao":"Curaçao"
+  "usa":"United States","united states":"United States","united states of america":"United States",
+  "korea republic":"South Korea","south korea":"South Korea",
+  "cabo verde":"Cape Verde","cape verde":"Cape Verde","cape verde islands":"Cape Verde",
+  "côte d'ivoire":"Ivory Coast","cote d'ivoire":"Ivory Coast","ivory coast":"Ivory Coast",
+  "congo dr":"Congo","dr congo":"Congo","congo democratic republic":"Congo",
+  "bosnia-herzegovina":"Bosnia and Herzegovina","bosnia-herz.":"Bosnia and Herzegovina","bosnia-h.":"Bosnia and Herzegovina","bosnia and herzegovina":"Bosnia and Herzegovina",
+  "ir iran":"Iran","iran":"Iran","irn":"Iran",
+  "türkiye":"Turkey","turkiye":"Turkey","turkey":"Turkey",
+  "curaçao":"Curaçao","curacao":"Curaçao"
 };
 const clean = s => (s ?? "").toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 const canon = s => aliases[clean(s)] || s;
@@ -177,37 +182,55 @@ function mergeLiveMatches(apiMatches){
 async function fetchLiveFromNetlify(){
   const status = $("#liveStatus");
   const output = $("#liveOutput");
-  output.textContent = "Connecting via Netlify function...";
-  try {
-    const res = await fetch("/.netlify/functions/worldcup", { cache: "no-store" });
-    const text = await res.text();
-    if(!res.ok) throw new Error(`${res.status} ${res.statusText}: ${text.slice(0, 300)}`);
-    const json = JSON.parse(text);
-    const matches = json.matches || [];
-    const updated = mergeLiveMatches(matches);
-    renderAll();
-    status.textContent = `Live via Netlify • ${updated} results synced`;
-    status.className = "live-pill ok";
-    output.textContent = `Connected successfully via Netlify function.
+  output.textContent = "Connecting to the live server function...";
+
+  const paths = ["/api/worldcup", "/.netlify/functions/worldcup"];
+  let lastError = null;
+
+  for (const path of paths) {
+    try {
+      const res = await fetch(path, { cache: "no-store" });
+      const text = await res.text();
+      if(!res.ok) throw new Error(`${path} → ${res.status} ${res.statusText}: ${text.slice(0, 300)}`);
+      const json = JSON.parse(text);
+      const matches = json.matches || [];
+      const updated = mergeLiveMatches(matches);
+      renderAll();
+      status.textContent = `Live connected • ${updated} results synced`;
+      status.className = "live-pill ok";
+      output.textContent = `Connected successfully.
+Function used: ${path}
 Matches received: ${matches.length}
 Local results updated: ${updated}
 
 Last API response preview:
 ` + JSON.stringify(json, null, 2).slice(0,2500);
-  } catch(e) {
-    status.textContent = "Netlify function not available";
-    status.className = "live-pill warn";
-    output.textContent = `This live sync needs to be opened from the deployed Netlify website, not by double-clicking index.html locally.
-
-Error: ${e.message || e}
-
-What to do:
-1. Upload this whole folder/ZIP to Netlify.
-2. Open the Netlify website URL.
-3. Press this button again.
-
-I included the function at: netlify/functions/worldcup.js`;
+      return;
+    } catch(e) {
+      lastError = e.message || String(e);
+    }
   }
+
+  status.textContent = "Live function not deployed";
+  status.className = "live-pill warn";
+  output.textContent = `The website loaded, but the Netlify Function did not deploy.
+
+Error: ${lastError}
+
+This usually happens when the site was uploaded using Netlify drag-and-drop. Drag-and-drop publishes static files, but functions often do not deploy from it.
+
+Fix:
+1. Put this folder in a GitHub repository.
+2. In Netlify, use Add new project → Import from GitHub.
+3. Deploy the repo.
+
+Alternative for Mac/Windows terminal:
+1. npm install -g netlify-cli
+2. cd into this folder
+3. netlify login
+4. netlify deploy --build --prod
+
+Then open the real *.netlify.app URL and press Sync again.`;
 }
 
 $("#testLive").addEventListener("click", fetchLiveFromNetlify);
