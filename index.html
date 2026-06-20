@@ -28,10 +28,11 @@
         <div class="hero-copy">
           <p class="eyebrow">Match Centre • FIFA-style table</p>
           <h1>High School Boys + Ehti</h1>
-          <p class="lead">A premium World Cup league hub with live results, official-style fixtures, player tabs and a proper Premier League table.</p>
+          <p class="lead">An official-style World Cup league hub with all 104 fixtures, live results, knockout flowchart and a proper Premier League-style private table.</p>
           <div class="actions">
             <button class="primary" data-tab="leaderboard">View Standings</button>
             <button data-tab="fixtures">Match Centre</button>
+            <button data-tab="bracket">Knockout Flowchart</button>
             <button data-tab="players">Player Profiles</button>
           </div>
         </div>
@@ -41,7 +42,7 @@
           <strong id="currentLeader">—</strong>
           <small id="leaderMeta">Loading table…</small>
           <div class="mini-divider"></div>
-          <p>Live sync checks the World Cup API and recalculates your private league table.</p>
+          <p>Live sync loads all 104 World Cup fixtures, including knockout slots shown as TBC until teams are decided.</p><div class="mini-divider"></div><span class="card-label">Next fixture</span><strong class="mini-strong" id="nextFixture">—</strong><small id="nextFixtureMeta"></small>
         </aside>
       </section>
     </header>
@@ -67,7 +68,8 @@
       <div class="tabs" role="tablist">
         <button class="tab active" data-tab="leaderboard">Standings</button>
         <button class="tab" data-tab="players">Players</button>
-        <button class="tab" data-tab="fixtures">Fixtures</button>
+        <button class="tab" data-tab="fixtures">All Fixtures</button>
+        <button class="tab" data-tab="bracket">Knockout Flowchart</button>
         <button class="tab" data-tab="results">Results</button>
         <button class="tab" data-tab="live">Live API</button>
       </div>
@@ -106,7 +108,7 @@
           <div>
             <p class="section-kicker">Match centre</p>
             <h2>Fixtures</h2>
-            <p>Chronological fixtures with owners and live status.</p>
+            <p>All 104 fixtures are shown. Knockout teams display as TBC until confirmed.</p>
           </div>
           <div class="filters">
             <input id="fixtureSearch" placeholder="Search team/player…" />
@@ -115,11 +117,34 @@
               <option value="TIMED">Upcoming</option>
               <option value="FINISHED">Finished</option>
             </select>
+            <select id="stageFilter">
+              <option value="all">All stages</option>
+              <option value="GROUP_STAGE">Group Stage</option>
+              <option value="LAST_32">Round of 32</option>
+              <option value="LAST_16">Round of 16</option>
+              <option value="QUARTER_FINALS">Quarter-finals</option>
+              <option value="SEMI_FINALS">Semi-finals</option>
+              <option value="THIRD_PLACE">Third Place</option>
+              <option value="FINAL">Final</option>
+            </select>
           </div>
         </div>
         <div class="table-wrap">
           <table id="fixturesTable"></table>
         </div>
+      </section>
+
+
+
+      <section class="panel" id="bracket">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">Tournament road map</p>
+            <h2>Knockout Flowchart</h2>
+            <p>Every knockout fixture is visible. Undecided teams are shown as TBC instead of being hidden.</p>
+          </div>
+        </div>
+        <div id="bracketGrid" class="bracket-grid"></div>
       </section>
 
       <section class="panel" id="results">

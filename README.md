@@ -1,11 +1,16 @@
-# High School Boys + Ehti World Cup League
+# High School Boys + Ehti — Official Full Fixtures Version
 
-Updated with a more premium FIFA-style tournament design.
+This version fixes the fixture count and design:
 
-## Upload update
-Replace the files in your existing GitHub repository with these files, keeping the same repo and same Netlify site.
+- All 104 World Cup 2026 fixtures are included.
+- Knockout fixtures are shown in a flowchart/bracket.
+- Undecided knockout teams show as TBC rather than being hidden.
+- Dashboard now shows Total Fixtures, Played, Remaining, and Goals Counted.
+- Leaderboard table has been redesigned with a more official tournament style.
+- Live sync replaces the saved snapshot with the latest API data from Netlify.
 
-Required structure:
+## Deploy update
+Upload/replace these files in the same GitHub repository:
 
 ```text
 index.html
@@ -18,8 +23,4 @@ README.md
 netlify/functions/worldcup.js
 ```
 
-Then go to Netlify:
-
-**Deploys → Trigger deploy → Deploy site**
-
-Your existing Netlify link stays the same.
+Then in Netlify: Deploys → Trigger deploy → Deploy site.
