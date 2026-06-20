@@ -3,186 +3,165 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>High School Boys + Ehti | World Cup League</title>
+  <title>World Cup Boys League</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="stadium-bg"></div>
-  <div class="site-shell">
-    <header class="masthead">
-      <nav class="topbar">
-        <div class="brand-lockup">
-          <div class="emblem" aria-hidden="true">⚽</div>
-          <div>
-            <strong>High School Boys + Ehti</strong>
-            <small>World Cup Private League</small>
-          </div>
-        </div>
-        <div class="top-actions">
-          <div class="live-pill" id="liveStatus">Static data loaded</div>
-          <a class="ghost-link" href="#leaderboard" data-tab="leaderboard">Standings</a>
-        </div>
-      </nav>
 
-      <section class="hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Match Centre • FIFA-style table</p>
-          <h1>High School Boys + Ehti</h1>
-          <p class="lead">An official-style World Cup league hub with all 104 fixtures, live results, knockout flowchart and a proper Premier League-style private table.</p>
-          <div class="actions">
-            <button class="primary" data-tab="leaderboard">View Standings</button>
-            <button data-tab="fixtures">Match Centre</button>
-            <button data-tab="bracket">Knockout Flowchart</button>
-            <button data-tab="players">Player Profiles</button>
-          </div>
-        </div>
+  <header class="site-header">
+    <nav class="main-nav">
+      <a class="brand" href="#home" data-tab="home">
+        <span class="brand-trophy" aria-hidden="true">🏆</span>
+        <span><strong>World Cup Boys League</strong><small>Private League</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="#home" data-tab="home">Home</a>
+        <a href="#leaderboard" data-tab="leaderboard">Leaderboard</a>
+        <a href="#teams" data-tab="teams">Teams</a>
+        <a href="#fixtures" data-tab="fixtures">Fixtures</a>
+        <a href="#results" data-tab="results">Results</a>
+        <a href="#normal" data-tab="normal">Normal WC</a>
+        <a href="#bracket" data-tab="bracket">Flowchart</a>
+        <a href="#players" data-tab="players">Players</a>
+        <a href="#live" data-tab="live">Live API</a>
+      </div>
+      <button class="sync-btn" id="navSync">Sync Live</button>
+    </nav>
+  </header>
 
-        <aside class="leader-card">
-          <span class="card-label">Current leader</span>
+  <main class="site-shell">
+    <section class="panel active" id="home">
+      <section class="hero-layout">
+        <div>
+          <p class="eyebrow">Match Centre</p>
+          <h1>World Cup Boys League</h1>
+          
+        </div>
+        <aside class="status-card">
+          <span id="liveStatus">Static data loaded</span>
           <strong id="currentLeader">—</strong>
-          <small id="leaderMeta">Loading table…</small>
-          <div class="mini-divider"></div>
-          <p>Live sync loads all 104 World Cup fixtures, including knockout slots shown as TBC until teams are decided.</p><div class="mini-divider"></div><span class="card-label">Next fixture</span><strong class="mini-strong" id="nextFixture">—</strong><small id="nextFixtureMeta"></small>
+          <small id="leaderMeta">Loading standings…</small>
         </aside>
       </section>
-    </header>
 
-    <main>
-      <section class="kpis" id="kpis"></section>
-
-      <section class="competition-strip">
-        <div>
-          <span>Competition</span>
-          <strong>World Cup 2026</strong>
-        </div>
-        <div>
-          <span>Rules</span>
-          <strong>Win 3 • Draw 1</strong>
-        </div>
-        <div>
-          <span>Sorting</span>
-          <strong>Pts • GD • GF • Wins</strong>
-        </div>
+      <section id="matchCentre" class="match-centre"></section>
+      <section id="podium" class="podium"></section>
+      <section class="home-table-card">
+        <div class="home-table-head"><h2>Leaderboard</h2><span>Live table</span></div>
+        <div class="home-table-scroll"><table id="homeLeaderboardTable"></table></div>
       </section>
+      <section id="kpis" class="kpis"></section>
+    </section>
 
-      <div class="tabs" role="tablist">
-        <button class="tab active" data-tab="leaderboard">Standings</button>
-        <button class="tab" data-tab="players">Players</button>
-        <button class="tab" data-tab="fixtures">All Fixtures</button>
-        <button class="tab" data-tab="bracket">Knockout Flowchart</button>
-        <button class="tab" data-tab="results">Results</button>
-        <button class="tab" data-tab="live">Live API</button>
+    <section class="panel" id="leaderboard">
+      <div class="panel-head">
+        <div>
+          <p class="section-kicker">Standings</p>
+          <h2>Leaderboard</h2>
+          
+        </div>
+        <input id="tableSearch" placeholder="Search player or team…" />
       </div>
+      <div class="table-wrap featured-table"><table id="leaderboardTable"></table></div>
+    </section>
 
-      <section class="panel active" id="leaderboard">
-        <div class="panel-head">
-          <div>
-            <p class="section-kicker">Private league standings</p>
-            <h2>League Table</h2>
-            <p>Sorted by points, goal difference, goals for, then wins.</p>
-          </div>
-          <input id="tableSearch" placeholder="Search player…" />
+    <section class="panel" id="teams">
+      <div class="panel-head">
+        <div>
+          <p class="section-kicker">Teams</p>
+          <h2>Teams</h2>
+          
         </div>
-        <div class="table-wrap featured-table">
-          <table id="leaderboardTable"></table>
-        </div>
-      </section>
+        <input id="teamSearch" placeholder="Search country/player…" />
+      </div>
+      <div id="teamsGrid" class="teams-grid"></div>
+    </section>
 
-      <section class="panel" id="players">
-        <div class="panel-head">
-          <div>
-            <p class="section-kicker">Squad ownership</p>
-            <h2>Player Profiles</h2>
-            <p>Each player, their teams, record and match list.</p>
-          </div>
-          <select id="playerSelect"></select>
+    <section class="panel" id="fixtures">
+      <div class="panel-head">
+        <div>
+          <p class="section-kicker">Fixtures</p>
+          <h2>Fixtures</h2>
+          
         </div>
-        <div id="playerCards" class="cards"></div>
-        <div class="table-wrap compact">
-          <table id="playerMatchesTable"></table>
+        <div class="filters">
+          <input id="fixtureSearch" placeholder="Search team/player…" />
+          <select id="statusFilter"><option value="all">All statuses</option><option value="TIMED">Upcoming</option><option value="IN_PLAY">Live</option><option value="FINISHED">Finished</option></select>
+          <select id="stageFilter"><option value="all">All stages</option><option value="GROUP_STAGE">Group Stage</option><option value="LAST_32">Round of 32</option><option value="LAST_16">Round of 16</option><option value="QUARTER_FINALS">Quarter-finals</option><option value="SEMI_FINALS">Semi-finals</option><option value="THIRD_PLACE">Third Place</option><option value="FINAL">Final</option></select>
         </div>
-      </section>
+      </div>
+      <div id="fixturesList" class="fixtures-list"></div>
+    </section>
 
-      <section class="panel" id="fixtures">
-        <div class="panel-head">
-          <div>
-            <p class="section-kicker">Match centre</p>
-            <h2>Fixtures</h2>
-            <p>All 104 fixtures are shown. Knockout teams display as TBC until confirmed.</p>
-          </div>
-          <div class="filters">
-            <input id="fixtureSearch" placeholder="Search team/player…" />
-            <select id="statusFilter">
-              <option value="all">All statuses</option>
-              <option value="TIMED">Upcoming</option>
-              <option value="FINISHED">Finished</option>
-            </select>
-            <select id="stageFilter">
-              <option value="all">All stages</option>
-              <option value="GROUP_STAGE">Group Stage</option>
-              <option value="LAST_32">Round of 32</option>
-              <option value="LAST_16">Round of 16</option>
-              <option value="QUARTER_FINALS">Quarter-finals</option>
-              <option value="SEMI_FINALS">Semi-finals</option>
-              <option value="THIRD_PLACE">Third Place</option>
-              <option value="FINAL">Final</option>
-            </select>
-          </div>
+    <section class="panel" id="results">
+      <div class="panel-head">
+        <div>
+          <p class="section-kicker">Results</p>
+          <h2>Results</h2>
+          
         </div>
-        <div class="table-wrap">
-          <table id="fixturesTable"></table>
+        <input id="resultSearch" placeholder="Search results…" />
+      </div>
+      <div class="table-wrap"><table id="resultsTable"></table></div>
+    </section>
+
+    <section class="panel" id="normal">
+      <div class="panel-head">
+        <div>
+          <p class="section-kicker">World Cup</p>
+          <h2>Groups & Progression</h2>
         </div>
-      </section>
-
-
-
-      <section class="panel" id="bracket">
-        <div class="panel-head">
-          <div>
-            <p class="section-kicker">Tournament road map</p>
-            <h2>Knockout Flowchart</h2>
-            <p>Every knockout fixture is visible. Undecided teams are shown as TBC instead of being hidden.</p>
-          </div>
+        <input id="normalSearch" placeholder="Search group or country…" />
+      </div>
+      <div class="normal-summary" id="normalSummary"></div>
+      <div id="groupTables" class="groups-grid"></div>
+      <div class="normal-route-head">
+        <div>
+          <p class="section-kicker">Knockout</p>
+          <h2>Knockout Flowchart</h2>
+          
         </div>
-        <div id="bracketGrid" class="bracket-grid"></div>
-      </section>
+      </div>
+      <div id="normalBracket" class="poster-bracket"></div>
+    </section>
 
-      <section class="panel" id="results">
-        <div class="panel-head">
-          <div>
-            <p class="section-kicker">Completed games</p>
-            <h2>Results</h2>
-            <p>Finished matches only, with points awarded to each owner.</p>
-          </div>
-          <input id="resultSearch" placeholder="Search results…" />
+    <section class="panel" id="bracket">
+      <div class="panel-head">
+        <div>
+          <p class="section-kicker">Flowchart</p>
+          <h2>Knockout Flowchart</h2>
+          
         </div>
-        <div class="table-wrap">
-          <table id="resultsTable"></table>
+      </div>
+      <div id="bracketGrid" class="bracket-grid"></div>
+    </section>
+
+    <section class="panel" id="players">
+      <div class="panel-head">
+        <div>
+          <p class="section-kicker">Manager pages</p>
+          <h2>Players</h2>
+          <p>Each player, their teams and all games played/upcoming.</p>
         </div>
-      </section>
+        <div id="playerTabs" class="player-tabs" aria-label="Select player"></div>
+      </div>
+      <div id="playerCards" class="cards"></div>
+      <div class="table-wrap compact"><table id="playerMatchesTable"></table></div>
+    </section>
 
-      <section class="panel" id="live">
-        <div class="setup">
-          <p class="section-kicker">Live data connection</p>
-          <h2>Live API Mode</h2>
-          <p>The site now uses the Netlify Function at <code>/.netlify/functions/worldcup</code>, so the sync button works from your deployed Netlify link.</p>
-          <ol>
-            <li>Upload these files to the same GitHub repository.</li>
-            <li>In Netlify, go to <strong>Deploys → Trigger deploy → Deploy site</strong>.</li>
-            <li>Open the Netlify link and press the button below.</li>
-          </ol>
-          <button id="testLive" class="primary">Sync live scores now</button>
-          <pre id="liveOutput">Not tested yet.</pre>
-        </div>
-      </section>
-    </main>
+    <section class="panel" id="live">
+      <div class="setup">
+        <p class="section-kicker">Live data connection</p>
+        <h2>Live API Mode</h2>
+        <p>This site uses the Netlify function at <code>/.netlify/functions/worldcup</code>. Use the button below after deploying on Netlify.</p>
+        <button id="testLive" class="primary">Sync live scores now</button>
+        <pre id="liveOutput">Not tested yet.</pre>
+      </div>
+    </section>
+  </main>
 
-    <footer>
-      <span>High School Boys + Ehti World Cup League</span>
-      <span>Designed as an official-style private tournament hub</span>
-    </footer>
-  </div>
-
+  <footer class="footer">World Cup Boys League</footer>
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
