@@ -102,6 +102,24 @@ function renderLeaderboard(){
   const rows=q?table.filter(r=>clean(r.Person).includes(q)||r.Teams.some(t=>clean(t).includes(q))):table;
   htmlTable($('#leaderboardTable'), headers, rows, rowFn);
   htmlTable($('#homeLeaderboardTable'), headers, table, rowFn);
+  renderLeaderboardCards($('#leaderboardTable'), rows, 'leaderboardMobileCards');
+  renderLeaderboardCards($('#homeLeaderboardTable'), table, 'homeLeaderboardMobileCards');
+}
+function renderLeaderboardCards(tableEl, rows, id){
+  if(!tableEl) return;
+  let wrap=document.getElementById(id);
+  if(!wrap){
+    wrap=document.createElement('div');
+    wrap.id=id;
+    wrap.className='leaderboard-mobile-cards';
+    tableEl.parentElement?.appendChild(wrap);
+  }
+  wrap.innerHTML = rows.map(r=>`<article class="mobile-league-row rank-${r.Rank}">
+    <div class="mobile-rank">${r.Rank<=3?['🥇','🥈','🥉'][r.Rank-1]:r.Rank}</div>
+    <div class="mobile-player"><strong>${safe(r.Person)}</strong><small>${r.P} played • ${r.W}W ${r.D}D ${r.L}L</small></div>
+    <div class="mobile-points"><strong>${r.Pts}</strong><span>PTS</span></div>
+    <div class="mobile-stats"><span>GD ${r.GD>=0?'+':''}${r.GD}</span><span>GF ${r.GF}</span><span>GA ${r.GA}</span></div>
+  </article>`).join('');
 }
 function teamStats(team){ const t=canon(team); const matches=allMatches().filter(m=>m.home===t || m.away===t); const finished=matches.filter(m=>m.Status==='FINISHED'); let P=0,W=0,D=0,L=0,GF=0,GA=0,Pts=0; finished.forEach(m=>{ const home=m.home===t, gf=home?+m['Home Goals']:+m['Away Goals'], ga=home?+m['Away Goals']:+m['Home Goals']; P++; GF+=gf; GA+=ga; if(gf>ga){W++;Pts+=3}else if(gf===ga){D++;Pts++}else L++; }); return {P,W,D,L,GF,GA,GD:GF-GA,Pts,matches,latest:finished.at(-1),next:matches.find(m=>m.Status!=='FINISHED')}; }
 function renderTeams(){ const q=clean($('#teamSearch')?.value); const all=state.teams.flatMap(p=>p.countries.map(c=>({team:canon(c),owner:p.person}))).sort((a,b)=>a.team.localeCompare(b.team)); const filtered=q?all.filter(x=>clean(x.team).includes(q)||clean(x.owner).includes(q)):all; $('#teamsGrid').innerHTML=filtered.map(({team,owner})=>{ const st=teamStats(team); const latest=st.latest?`${teamDisplay(st.latest.home)} ${st.latest['Home Goals']} - ${st.latest['Away Goals']} ${teamDisplay(st.latest.away)}`:'No result yet'; const next=st.next?`${teamDisplay(st.next.home)} vs ${teamDisplay(st.next.away)} <small>${fmtDate(st.next.DateISO)}</small>`:'No upcoming fixture'; return `<article class="team-card"><div class="team-card-head">${flagImg(team)}<div><h3>${safe(team)}</h3><p>${owner}</p></div></div><div class="team-record"><b>${st.Pts}</b><span>pts</span><b>${st.GD>=0?'+':''}${st.GD}</b><span>GD</span><b>${st.P}</b><span>P</span></div><div class="team-lines"><span>Latest</span><p>${latest}</p><span>Next</span><p>${next}</p></div></article>`; }).join(''); }

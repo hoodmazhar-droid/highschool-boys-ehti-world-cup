@@ -260,3 +260,53 @@ img, svg, video, canvas { max-width:100%; height:auto; }
   th, td { font-size:11px !important; padding:8px 5px !important; }
   .flag { width:25px !important; height:17px !important; }
 }
+
+/* Ultra-simple phone leaderboard */
+.leaderboard-mobile-cards{display:none}
+@media (max-width: 760px){
+  #leaderboard .featured-table,
+  .home-table-card .home-table-scroll{
+    border:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    overflow:visible!important;
+  }
+  #leaderboardTable,
+  #homeLeaderboardTable{
+    display:none!important;
+  }
+  .leaderboard-mobile-cards{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:9px!important;
+    width:100%!important;
+  }
+  .mobile-league-row{
+    display:grid!important;
+    grid-template-columns:42px minmax(0,1fr) 64px!important;
+    grid-template-areas:"rank player pts" "rank stats pts"!important;
+    align-items:center!important;
+    gap:4px 10px!important;
+    padding:12px!important;
+    border-radius:16px!important;
+    background:#161616!important;
+    border:1px solid rgba(255,255,255,.10)!important;
+    box-shadow:0 10px 25px rgba(0,0,0,.16)!important;
+    color:#fff!important;
+  }
+  .mobile-league-row.rank-1{border-color:rgba(212,175,55,.72)!important;background:linear-gradient(135deg,#211b0b,#161616)!important;}
+  .mobile-league-row.rank-2{border-color:rgba(210,214,220,.55)!important;}
+  .mobile-league-row.rank-3{border-color:rgba(205,127,50,.55)!important;}
+  .mobile-rank{grid-area:rank;font-size:22px;font-weight:900;text-align:center;color:#d4af37!important;}
+  .mobile-player{grid-area:player;min-width:0;}
+  .mobile-player strong{display:block;font-size:16px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mobile-player small{display:block;color:#b9b9b9;font-size:12px;margin-top:3px;}
+  .mobile-points{grid-area:pts;text-align:right;}
+  .mobile-points strong{display:block;font-size:28px;line-height:.95;color:#d4af37!important;}
+  .mobile-points span{display:block;font-size:10px;font-weight:900;letter-spacing:.1em;color:#aaa;}
+  .mobile-stats{grid-area:stats;display:flex;gap:6px;flex-wrap:wrap;}
+  .mobile-stats span{font-size:11px;color:#ddd;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:3px 7px;}
+  .home-table-card{padding:12px!important;}
+  .home-table-head{margin-bottom:10px!important;}
+  .home-table-head h2{font-size:20px!important;}
+}
